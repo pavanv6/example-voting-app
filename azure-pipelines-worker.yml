@@ -12,7 +12,7 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '56addf5a-6a05-4871-96ef-b0aca23946a5'
+  dockerRegistryServiceConnection: '6c0d5c58-ce84-4457-9384-ba1672289f63'
   imageRepository: 'examplevotingappworker'
   containerRegistry: 'twotierapp.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/worker/Dockerfile'
@@ -20,6 +20,7 @@ variables:
 
 pool:
  name: 'twotierapp'
+
 stages:
 - stage: Build
   displayName: Build and push stage
