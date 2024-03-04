@@ -1,0 +1,52 @@
+# Docker
+# Build and push an image to Azure Container Registry
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+ paths:
+   include:
+     - result/*
+
+resources:
+- repo: self
+
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '0dfd4c7c-b4cb-41ef-ad2d-7437fbf9a4c8'
+  imageRepository: 'twotierapp'
+  containerRegistry: 'twotierapp.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/result/Dockerfile'
+  tag: '$(Build.BuildId)'
+
+pool:
+ name: twotierapp
+
+stages:
+- stage: Build
+  displayName: Build
+  jobs:
+  - job: Build
+    displayName: Build
+    steps:
+  - task: Docker@2
+  inputs:
+    containerRegistry: '$(dockerRegistryServiceConnection)'
+    repository: '$(imageRepository)'
+    command: 'build'
+    Dockerfile: 'result/Dockerfile'
+    tags: '$(tag)'
+
+- stage: Build
+  displayName: Build
+  jobs:
+  - job: Build
+    displayName: Build
+    steps:
+  - task: Docker@2
+  inputs:
+    containerRegistry: '$(dockerRegistryServiceConnection)'
+    repository: '$(imageRepository)'
+    command: 'push'
+    Dockerfile: 'result/Dockerfile'
+    tags: '$(tag)'
+'
